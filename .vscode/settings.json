@@ -1,7 +1,7 @@
 {
   "go.generateTestsFlags": [
     "-template_dir",
-    // BUG: "${workspaceFolder}/templates/gotests" cannot be used here
-    "/home/ras/ghq/github.com/Ras96/go-clean-architecture-template/templates/gotests"
+    // BUG: "${workspaceFolder}/dev/templates/gotests" cannot be used here
+    "/home/ras/ghq/github.com/Ras96/go-clean-architecture-template/dev/templates/gotests"
   ]
 }
