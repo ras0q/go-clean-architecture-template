@@ -2,7 +2,11 @@ module github.com/Ras96/go-clean-architecture-template
 
 go 1.18
 
-require github.com/labstack/echo/v4 v4.7.2
+require (
+	github.com/golang/mock v1.6.0
+	github.com/google/go-cmp v0.5.8
+	github.com/labstack/echo/v4 v4.7.2
+)
 
 require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
