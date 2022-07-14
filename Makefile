@@ -20,6 +20,10 @@ mod:
 build:
 	go build -o ${APP_NAME}
 
+# run binary with hot-reloading
+dev:
+	go run github.com/cosmtrek/air@latest
+
 # generate gofiles
 gogen:
 	go generate -x ./...
