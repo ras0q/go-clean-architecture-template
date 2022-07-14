@@ -14,21 +14,12 @@ func SetupEchoRouter(e *echo.Echo) error {
 		return errors.Wrap(err, "setupEchoMiddleware")
 	}
 
+	c := injectControllers()
+
 	// register controllers
-	// example:
-	//
-	// // request body (should be defined in internal/interfaces/controller)
-	// type req struct {
-	// 	ID   string `param:"id"`  // path parameter
-	// 	Name string `json:"name"` // request body
-	// }
-	// // controller (should be defined in internal/interfaces/controller)
-	// f := func(ctx context.Context, r *req) (string, error) {
-	// 	return fmt.Sprintf("Hello, %s(%s)", r.Name, r.ID), nil
-	// }
-	// // endpoint
-	// api := e.Group("/api")
-	// api.GET("/", h(f))
+	api := e.Group("/api")
+	users := api.Group("/users")
+	users.GET("/:id", h(c.User().GetUser))
 
 	return nil
 }
@@ -51,7 +42,7 @@ func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, error))
 
 		res, err := f(c.Request().Context(), req)
 		if err != nil {
-			return convertEchoHTTPError(c, err)
+			return convertEchoHTTPError(c, errors.Wrap(err, "controller"))
 		}
 
 		return c.JSON(http.StatusOK, res)
