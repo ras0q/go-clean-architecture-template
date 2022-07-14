@@ -1,0 +1,5 @@
+linters:
+  enable:
+    - revive
+  disable:
+    - structcheck # structcheck is disabled in go1.18.

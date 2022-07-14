@@ -13,6 +13,7 @@ import (
 // testE is common *echo.Echo in integration tests
 var testE = new(echo.Echo)
 
+//nolint:staticcheck
 func TestMain(m *testing.M) {
 	testE = echo.New()
 
