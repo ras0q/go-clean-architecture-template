@@ -7,6 +7,10 @@ import (
 
 func main() {
 	e := echo.New()
+	if err := infrastructure.SetupEchoMiddleware(e); err != nil {
+		e.Logger.Fatalf("infrastructure.SetupEchoMiddleware: %s", err.Error())
+	}
+
 	if err := infrastructure.SetupEchoRouter(e); err != nil {
 		e.Logger.Fatalf("infrastructure.SetupEchoRouter: %s", err.Error())
 	}

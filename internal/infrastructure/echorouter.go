@@ -10,10 +10,6 @@ import (
 )
 
 func SetupEchoRouter(e *echo.Echo) error {
-	if err := setupEchoMiddleware(e); err != nil {
-		return errors.Wrap(err, "setupEchoMiddleware")
-	}
-
 	c := injectControllers()
 
 	// register controllers
@@ -24,7 +20,7 @@ func SetupEchoRouter(e *echo.Echo) error {
 	return nil
 }
 
-func setupEchoMiddleware(e *echo.Echo) error {
+func SetupEchoMiddleware(e *echo.Echo) error {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
