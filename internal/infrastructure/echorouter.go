@@ -4,14 +4,13 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/controller"
 	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func SetupEchoRouter(e *echo.Echo) error {
-	c := injectControllers()
-
+func SetupEchoRouter(e *echo.Echo, c controller.Controllers) error {
 	// register controllers
 	api := e.Group("/api")
 	users := api.Group("/users")

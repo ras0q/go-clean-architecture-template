@@ -11,7 +11,8 @@ func main() {
 		e.Logger.Fatalf("infrastructure.SetupEchoMiddleware: %s", err.Error())
 	}
 
-	if err := infrastructure.SetupEchoRouter(e); err != nil {
+	c := infrastructure.InjectControllers()
+	if err := infrastructure.SetupEchoRouter(e, c); err != nil {
 		e.Logger.Fatalf("infrastructure.SetupEchoRouter: %s", err.Error())
 	}
 

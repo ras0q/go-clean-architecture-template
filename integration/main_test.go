@@ -16,7 +16,8 @@ var testE = new(echo.Echo)
 func TestMain(m *testing.M) {
 	testE = echo.New()
 
-	if err := infrastructure.SetupEchoRouter(testE); err != nil {
+	c := infrastructure.InjectControllers()
+	if err := infrastructure.SetupEchoRouter(testE, c); err != nil {
 		panic(err)
 	}
 

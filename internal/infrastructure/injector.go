@@ -5,7 +5,7 @@ import (
 	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository"
 )
 
-func injectControllers() controller.Controllers {
+func InjectControllers() controller.Controllers {
 	return controller.NewControllers(
 		controller.NewUserController(
 			repository.NewUserRepository(),
