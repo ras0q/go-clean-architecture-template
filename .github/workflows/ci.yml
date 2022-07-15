@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: ['main']
 
-env:
-  MYSQL_PASS: password
-  MYSQL_NAME: myapp
-
 jobs:
   test-unit:
     name: Test (Unit)
@@ -27,8 +23,8 @@ jobs:
       mysql:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_PASS }}
-          MYSQL_DATABASE: ${{ env.MYSQL_NAME }}
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: myapp
         ports:
           - 3306:3306
     steps:
