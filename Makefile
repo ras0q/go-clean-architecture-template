@@ -12,7 +12,7 @@ MYSQL_NAME := myapp
 .PHONY: ${shell egrep -o ^[a-zA-Z_-]+: ./Makefile | sed 's/://'}
 
 # default task
-all: clean mod build
+all: clean gogen mod build
 
 # remove binary
 clean:

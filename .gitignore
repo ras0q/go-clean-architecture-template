@@ -1,1 +1,6 @@
 dev/tmp/
+internal/interfaces/repository/ent/
+!internal/interfaces/repository/ent/generate.go
+!internal/interfaces/repository/ent/schema/
+
+
