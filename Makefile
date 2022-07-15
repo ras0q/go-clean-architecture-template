@@ -27,7 +27,7 @@ mod:
 build:
 	go build -o ${APP_NAME}
 
-# run binary with hot-reloading
+# run binary with live reload
 dev:
 	go run github.com/cosmtrek/air@latest
 
