@@ -13,29 +13,29 @@ import (
 func Test_userControllerImpl_GetUser(t *testing.T) {
 	t.Parallel()
 	tests := map[string]struct {
-		userID      string
+		userID      int
 		reqJSONBody string
 		statusCode  int
 		wantResBody *controller.GetUserResponse
 	}{
 		"200": {
-			userID:      "1",
+			userID:      1,
 			reqJSONBody: "",
 			statusCode:  http.StatusOK,
 			wantResBody: &controller.GetUserResponse{
-				ID:    "1",
+				ID:    1,
 				Name:  "Ras",
 				Email: "ras@example.com",
 			},
 		},
 		"400: invalid json": {
-			userID:      "1",
+			userID:      1,
 			reqJSONBody: "{",
 			statusCode:  http.StatusBadRequest,
 			wantResBody: nil,
 		},
 		"404: user not found": {
-			userID:      "notExistUserID",
+			userID:      10000,
 			reqJSONBody: "",
 			statusCode:  http.StatusNotFound,
 			wantResBody: nil,
@@ -46,7 +46,7 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			res, err := doRequest(t, http.MethodGet, fmt.Sprintf("/api/users/%s", tt.userID), tt.reqJSONBody)
+			res, err := doRequest(t, http.MethodGet, fmt.Sprintf("/api/users/%d", tt.userID), tt.reqJSONBody)
 			if err != nil {
 				t.Errorf("doRequest: %v", err)
 			}

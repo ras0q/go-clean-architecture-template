@@ -32,11 +32,11 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &GetUserRequest{
-					ID: "1",
+					ID: 1,
 				},
 			},
 			want: GetUserResponse{
-				ID:    "1",
+				ID:    1,
 				Name:  "test",
 				Email: "test@example.com",
 			},
@@ -62,7 +62,7 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &GetUserRequest{
-					ID: "1",
+					ID: 1,
 				},
 			},
 			want: GetUserResponse{},
@@ -84,7 +84,7 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &GetUserRequest{
-					ID: "1",
+					ID: 1,
 				},
 			},
 			want: GetUserResponse{},

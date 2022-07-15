@@ -10,28 +10,28 @@ import (
 )
 
 type user struct {
-	id    string
+	id    int
 	name  string
 	email string
 }
 
 type userRepositoryImpl struct {
-	users map[string]user
+	users map[int]user
 }
 
 func NewUserRepository() repository.UserRepository {
 	return &userRepositoryImpl{
-		users: map[string]user{
-			"1": {"1", "Ras", "ras@example.com"},
-			"2": {"2", "Cal", "cal@example.com"},
+		users: map[int]user{
+			1: {1, "Ras", "ras@example.com"},
+			2: {2, "Cal", "cal@example.com"},
 		},
 	}
 }
 
-func (r *userRepositoryImpl) FindByID(ctx context.Context, id string) (model.User, error) {
+func (r *userRepositoryImpl) FindByID(ctx context.Context, id int) (model.User, error) {
 	user, ok := r.users[id]
 	if !ok {
-		return model.User{}, errors.Wrap(errors.ErrNotFound, fmt.Sprintf("r.users[%s]", id))
+		return model.User{}, errors.Wrap(errors.ErrNotFound, fmt.Sprintf("r.users[%d]", id))
 	}
 
 	return model.User{

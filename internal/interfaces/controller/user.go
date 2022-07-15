@@ -22,11 +22,11 @@ func NewUserController(userRepository repository.UserRepository) UserController 
 }
 
 type GetUserRequest struct {
-	ID string `param:"id"`
+	ID int `param:"id"`
 }
 
 type GetUserResponse struct {
-	ID    string `json:"id"`
+	ID    int    `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }

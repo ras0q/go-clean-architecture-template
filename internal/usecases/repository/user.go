@@ -9,5 +9,5 @@ import (
 )
 
 type UserRepository interface {
-	FindByID(ctx context.Context, id string) (model.User, error)
+	FindByID(ctx context.Context, id int) (model.User, error)
 }
