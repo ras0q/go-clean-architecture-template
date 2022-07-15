@@ -1,5 +1,12 @@
 SHELL    := /bin/bash
-APP_NAME := MyApp
+APP_NAME := myapp
+
+MYSQL_CONTAINER_NAME := ${APP_NAME}_mysql
+MYSQL_USER := root
+MYSQL_PASS := password
+MYSQL_HOST := localhost
+MYSQL_PORT := 3306
+MYSQL_NAME := myapp
 
 # all tasks run as phony
 .PHONY: ${shell egrep -o ^[a-zA-Z_-]+: ./Makefile | sed 's/://'}
@@ -46,3 +53,15 @@ test-integration:
 # run linters
 lint:
 	go run github.com/golangci/golangci-lint/cmd/golangci-lint@latest run ./... --fix
+
+db-up:
+	docker run -d --rm -it \
+		--name ${MYSQL_CONTAINER_NAME} \
+		-p ${MYSQL_PORT}:3306 \
+		-e MYSQL_ROOT_PASSWORD=${MYSQL_PASS} \
+		-e MYSQL_DATABASE=${MYSQL_NAME} \
+		mysql:latest
+
+db-down:
+	docker stop ${MYSQL_CONTAINER_NAME}
+	docker rm ${MYSQL_CONTAINER_NAME}

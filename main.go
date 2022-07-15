@@ -8,12 +8,18 @@ import (
 func main() {
 	e := echo.New()
 	if err := infrastructure.SetupEchoMiddleware(e); err != nil {
-		e.Logger.Fatalf("infrastructure.SetupEchoMiddleware: %s", err.Error())
+		e.Logger.Fatalf("main: infrastructure.SetupEchoMiddleware: %s", err.Error())
 	}
 
-	c := infrastructure.InjectControllers()
+	ec, close, err := infrastructure.SetupEntClient()
+	if err != nil {
+		e.Logger.Fatalf("main: infrastructure.SetupEntClient: %s", err.Error())
+	}
+	defer close(e.Logger)
+
+	c := infrastructure.InjectControllers(ec)
 	if err := infrastructure.SetupEchoRouter(e, c); err != nil {
-		e.Logger.Fatalf("infrastructure.SetupEchoRouter: %s", err.Error())
+		e.Logger.Fatalf("main: infrastructure.SetupEchoRouter: %s", err.Error())
 	}
 
 	e.Logger.Fatal(e.Start(":1323"))
