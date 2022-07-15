@@ -8,6 +8,8 @@ on:
 
 env:
   GO_VERSION: 1.18
+  MYSQL_PASS: password
+  MYSQL_NAME: myapp
 
 jobs:
   test-unit:
@@ -29,6 +31,14 @@ jobs:
   test-integration:
     name: Test (Integration)
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_PASS }}
+          MYSQL_DATABASE: ${{ env.MYSQL_NAME }}
+        ports:
+          - 3306:3306
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
