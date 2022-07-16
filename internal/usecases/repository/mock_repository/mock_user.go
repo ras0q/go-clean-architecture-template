@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	model "github.com/Ras96/go-clean-architecture-template/internal/domain/model"
+	repository "github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -33,6 +34,21 @@ func NewMockUserRepository(ctrl *gomock.Controller) *MockUserRepository {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockUserRepository) EXPECT() *MockUserRepositoryMockRecorder {
 	return m.recorder
+}
+
+// Create mocks base method.
+func (m *MockUserRepository) Create(ctx context.Context, params *repository.CreateUserParams) (model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ctx, params)
+	ret0, _ := ret[0].(model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockUserRepositoryMockRecorder) Create(ctx, params interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUserRepository)(nil).Create), ctx, params)
 }
 
 // FindByID mocks base method.

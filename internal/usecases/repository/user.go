@@ -8,6 +8,14 @@ import (
 	"github.com/Ras96/go-clean-architecture-template/internal/domain/model"
 )
 
-type UserRepository interface {
-	FindByID(ctx context.Context, id int) (model.User, error)
-}
+type (
+	UserRepository interface {
+		FindByID(ctx context.Context, id int) (model.User, error)
+		Create(ctx context.Context, params *CreateUserParams) (model.User, error)
+	}
+
+	CreateUserParams struct {
+		Name  string
+		Email string
+	}
+)
