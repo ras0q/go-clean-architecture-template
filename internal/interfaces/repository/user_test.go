@@ -126,11 +126,28 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 			},
 			setupFields: func(t *testing.T, args args, want model.User) fields {
 				uc := newEntClient(t).User
-				insertUser(args.ctx, t, uc, 100, "test", "test@example.com")
+				insertUser(args.ctx, t, uc, 100, "test", "test100@example.com")
 
 				return fields{uc}
 			},
 			wantErr: false,
+		},
+		"error: duplicate email": {
+			args: args{
+				ctx: context.Background(),
+				params: &repository.CreateUserParams{
+					Name:  "test",
+					Email: "test@example.com",
+				},
+			},
+			want: model.User{},
+			setupFields: func(t *testing.T, args args, want model.User) fields {
+				uc := newEntClient(t).User
+				insertUser(args.ctx, t, uc, 1, "test", args.params.Email) // insert same email
+
+				return fields{uc}
+			},
+			wantErr: true,
 		},
 	}
 	for name, tt := range tests {

@@ -15,7 +15,7 @@ func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("id").Unique().Positive(),
 		field.String("name").MinLen(1).MaxLen(32),
-		field.String("email").NotEmpty(),
+		field.String("email").Unique().NotEmpty(),
 	}
 }
 
