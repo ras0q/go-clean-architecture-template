@@ -15,6 +15,7 @@ func SetupEchoRouter(e *echo.Echo, c controller.Controllers) error {
 	api := e.Group("/api")
 	users := api.Group("/users")
 	users.GET("/:id", h(c.User().GetUser))
+	users.POST("", h(c.User().PostUser))
 
 	return nil
 }
@@ -55,7 +56,7 @@ func convertEchoHTTPError(c echo.Context, err error) error {
 		statusCode = http.StatusNotFound
 	default:
 		// if internal error occurred, don't show error message
-		c.Logger().Errorf("internal error: %w", err)
+		c.Logger().Error(errors.Wrap(err, "internal error").Error())
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 

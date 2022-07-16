@@ -53,7 +53,10 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 				t.Errorf("doRequest: %v", err)
 			}
 			if res.Code != tt.statusCode {
-				t.Errorf("expected status code %d, but got %d", tt.statusCode, res.Code)
+				t.Errorf(
+					"expected status code %d, but got %d\nactual response body: %s",
+					tt.statusCode, res.Code, res.Body.String(),
+				)
 			}
 			if tt.wantResBody != nil {
 				var got controller.GetUserResponse
