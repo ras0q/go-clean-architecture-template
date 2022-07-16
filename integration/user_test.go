@@ -42,11 +42,13 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 		},
 	}
 
+	c := newTestClient(t)
+	c.insertMockUser(t)
 	for name, tt := range tests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			res, err := doRequest(t, http.MethodGet, fmt.Sprintf("/api/users/%d", tt.userID), tt.reqJSONBody)
+			res, err := c.doRequest(t, http.MethodGet, fmt.Sprintf("/api/users/%d", tt.userID), tt.reqJSONBody)
 			if err != nil {
 				t.Errorf("doRequest: %v", err)
 			}
