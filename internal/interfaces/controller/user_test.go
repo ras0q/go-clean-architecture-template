@@ -119,3 +119,97 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 		})
 	}
 }
+
+func Test_userControllerImpl_PostUser(t *testing.T) {
+	t.Parallel()
+	type args struct {
+		ctx context.Context
+		req *PostUserRequest
+	}
+	type fields struct {
+		ur repository.UserRepository
+	}
+	type setupFieldsFunc func(t *testing.T, args args, want PostUserResponse) fields
+	tests := map[string]struct {
+		args        args
+		want        PostUserResponse
+		setupFields setupFieldsFunc
+		wantErr     bool
+	}{
+		"success": {
+			args: args{
+				ctx: context.Background(),
+				req: &PostUserRequest{
+					Name:  "test",
+					Email: "test@example.com",
+				},
+			},
+			want: PostUserResponse{
+				ID:    1,
+				Name:  "test",
+				Email: "test@example.com",
+			},
+			setupFields: func(t *testing.T, args args, want PostUserResponse) fields {
+				ctrl := gomock.NewController(t)
+				mockur := mock_repository.NewMockUserRepository(ctrl)
+				mockur.
+					EXPECT().
+					Create(args.ctx, &repository.CreateUserParams{
+						Name:  args.req.Name,
+						Email: args.req.Email,
+					}).
+					Return(model.User{
+						ID:    1,
+						Name:  args.req.Name,
+						Email: args.req.Email,
+					}, nil)
+
+				return fields{
+					ur: mockur,
+				}
+			},
+			wantErr: false,
+		},
+		"error: internal": {
+			args: args{
+				ctx: context.Background(),
+				req: &PostUserRequest{
+					Name:  "test",
+					Email: "test@example.com",
+				},
+			},
+			want: PostUserResponse{},
+			setupFields: func(t *testing.T, args args, want PostUserResponse) fields {
+				ctrl := gomock.NewController(t)
+				mockur := mock_repository.NewMockUserRepository(ctrl)
+				mockur.
+					EXPECT().
+					Create(args.ctx, &repository.CreateUserParams{
+						Name:  args.req.Name,
+						Email: args.req.Email,
+					}).
+					Return(model.User{}, errors.ErrInternal)
+
+				return fields{
+					ur: mockur,
+				}
+			},
+			wantErr: true,
+		},
+	}
+	for name, tt := range tests {
+		tt := tt
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			f := tt.setupFields(t, tt.args, tt.want)
+			c := NewUserController(f.ur)
+			got, err := c.PostUser(tt.args.ctx, tt.args.req)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("wantErr is %t, but err is %v", tt.wantErr, err)
+			}
+			if diff := cmp.Diff(tt.want, got); len(diff) > 0 {
+				t.Errorf("Compare value is mismatch (-want +got):%s\n", diff)
+			}
+		})
+	}
+}
