@@ -57,8 +57,7 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 					"expected status code %d, but got %d\nactual response body: %s",
 					tt.statusCode, res.Code, res.Body.String(),
 				)
-			}
-			if tt.wantResBody != nil {
+			} else if tt.wantResBody != nil {
 				var got controller.GetUserResponse
 				if err := json.NewDecoder(res.Body).Decode(&got); err != nil {
 					t.Errorf("json.NewDecoder.Decode: %v", err)
