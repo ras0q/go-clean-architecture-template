@@ -51,9 +51,13 @@ func convertEchoHTTPError(c echo.Context, err error) error {
 
 	switch {
 	case errors.Is(err, errors.ErrBind):
+		fallthrough
+	case errors.Is(err, errors.ErrValidate):
 		statusCode = http.StatusBadRequest
 	case errors.Is(err, errors.ErrNotFound):
 		statusCode = http.StatusNotFound
+	case errors.Is(err, errors.ErrConflict):
+		statusCode = http.StatusConflict
 	default:
 		// if internal error occurred, don't show error message
 		c.Logger().Error(errors.Wrap(err, "internal error").Error())

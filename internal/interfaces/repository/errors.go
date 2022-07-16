@@ -9,6 +9,10 @@ func convertError(err error) error {
 	switch {
 	case ent.IsNotFound(err):
 		return errors.ErrNotFound
+	case ent.IsValidationError(err):
+		return errors.ErrValidate
+	case ent.IsConstraintError(err):
+		return errors.ErrConflict
 	default:
 		return err
 	}

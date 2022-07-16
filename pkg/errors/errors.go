@@ -13,6 +13,8 @@ import (
 var (
 	ErrNotFound = errors.New("not found")
 	ErrBind     = errors.New("bind error")
+	ErrValidate = errors.New("validate error")
+	ErrConflict = errors.New("invalid argument")
 	ErrInternal = errors.New("internal error")
 )
 

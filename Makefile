@@ -50,6 +50,19 @@ test-unit:
 test-integration:
 	go test ${f} ./integration/...
 
+# measure coverage of all tests
+cover-all: cover-unit cover-integration
+
+# measure coverage of unit tests
+cover-unit:
+	go test -coverprofile ./dev/tmp/cover_unit.out $$(go list ./... | grep -v "integration")
+	go tool cover -html ./dev/tmp/cover_unit.out -o ./dev/tmp/cover_unit.html
+
+# measure coverage of integration tests
+cover-integration:
+	go test -coverprofile ./dev/tmp/cover_integration.out -coverpkg ./... ./integration/...
+	go tool cover -html ./dev/tmp/cover_integration.out -o ./dev/tmp/cover_integration.html
+
 # run linters
 lint:
 	go run github.com/golangci/golangci-lint/cmd/golangci-lint@latest run ./... --fix
