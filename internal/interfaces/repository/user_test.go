@@ -50,7 +50,7 @@ func Test_userRepositoryImpl_FindByID(t *testing.T) {
 				id:  1,
 			},
 			want: model.User{},
-			setupFields: func(t *testing.T, args args, want model.User) fields {
+			setupFields: func(t *testing.T, args args, _ model.User) fields {
 				uc := newEntClient(t).User
 				insertUser(args.ctx, t, uc, args.id+1, "test", "test@example.com")
 
@@ -105,7 +105,7 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 				Name:  "test",
 				Email: "test@example.com",
 			},
-			setupFields: func(t *testing.T, args args, want model.User) fields {
+			setupFields: func(t *testing.T, _ args, _ model.User) fields {
 				uc := newEntClient(t).User
 				return fields{uc}
 			},
@@ -124,7 +124,7 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 				Name:  "test",
 				Email: "test@example.com",
 			},
-			setupFields: func(t *testing.T, args args, want model.User) fields {
+			setupFields: func(t *testing.T, args args, _ model.User) fields {
 				uc := newEntClient(t).User
 				insertUser(args.ctx, t, uc, 100, "test", "test100@example.com")
 
@@ -141,7 +141,7 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 				},
 			},
 			want: model.User{},
-			setupFields: func(t *testing.T, args args, want model.User) fields {
+			setupFields: func(t *testing.T, args args, _ model.User) fields {
 				uc := newEntClient(t).User
 				insertUser(args.ctx, t, uc, 1, "test", args.params.Email) // insert same email
 
