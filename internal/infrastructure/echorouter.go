@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/controller"
@@ -33,12 +34,17 @@ func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, error))
 	return func(c echo.Context) error {
 		req := new(ReqT)
 		if err := c.Bind(req); err != nil {
-			return convertEchoHTTPError(c, errors.Wrap(errors.ErrBind, err.Error()))
+			var herr *echo.HTTPError
+			if errors.As(err, &herr) {
+				herr.Message = fmt.Sprintf("bind failed: %v", herr.Message)
+
+				return herr
+			}
 		}
 
 		res, err := f(c.Request().Context(), req)
 		if err != nil {
-			return convertEchoHTTPError(c, errors.Wrap(err, "controller"))
+			return convertEchoHTTPError(c, err)
 		}
 
 		return c.JSON(http.StatusOK, res)
@@ -48,6 +54,11 @@ func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, error))
 // convertEchoHTTPError converts error to echo.HTTPError
 func convertEchoHTTPError(c echo.Context, err error) error {
 	var statusCode int
+
+	var herr *echo.HTTPError
+	if errors.As(err, &herr) {
+		return herr
+	}
 
 	switch {
 	case errors.Is(err, errors.ErrBind):
