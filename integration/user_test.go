@@ -103,7 +103,7 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 	for name, tt := range tests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
-			// NOTE: this test runs in serial, not parallel
+			t.Parallel()
 			res, err := c.doRequest(t, http.MethodPost, "/api/users", tt.reqJSONBody)
 			if err != nil {
 				t.Errorf("doRequest: %v", err)

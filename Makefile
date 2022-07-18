@@ -37,7 +37,7 @@ gogen:
 
 # NOTE: to override test flags, specify `f` such as:
 # $ make test-all f="-v -race"
-f := -v -cover -race
+f := -v -cover -coverpkg ./... -race
 
 # check all tests
 test-all: test-unit test-integration

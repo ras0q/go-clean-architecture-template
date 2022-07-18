@@ -33,6 +33,7 @@ func newTestClient(t *testing.T) *testClient {
 	)
 
 	e := echo.New()
+	infrastructure.SetupEchoMiddleware(e)
 
 	ec := enttest.Open(t, dn, dsn)
 	c := infrastructure.InjectControllers(ec)
