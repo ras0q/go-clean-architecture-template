@@ -40,6 +40,8 @@ func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, error))
 
 				return herr
 			}
+
+			return convertEchoHTTPError(c, err)
 		}
 
 		res, err := f(c.Request().Context(), req)
