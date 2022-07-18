@@ -107,6 +107,7 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 			},
 			setupFields: func(t *testing.T, _ args, _ model.User) fields {
 				uc := newEntClient(t).User
+
 				return fields{uc}
 			},
 			wantErr: false,
