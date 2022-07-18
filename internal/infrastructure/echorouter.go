@@ -55,12 +55,15 @@ func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, error))
 
 // convertEchoHTTPError converts error to echo.HTTPError
 func convertEchoHTTPError(c echo.Context, err error) error {
-	var statusCode int
-
 	var herr *echo.HTTPError
 	if errors.As(err, &herr) {
 		return herr
 	}
+
+	var (
+		statusCode int
+		message    string
+	)
 
 	switch {
 	case errors.Is(err, errors.ErrBind):
@@ -72,10 +75,14 @@ func convertEchoHTTPError(c echo.Context, err error) error {
 	case errors.Is(err, errors.ErrConflict):
 		statusCode = http.StatusConflict
 	default:
-		// if internal error occurred, don't show error message
 		c.Logger().Error(errors.Wrap(err, "internal error").Error())
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		statusCode = http.StatusInternalServerError
 	}
 
-	return echo.NewHTTPError(statusCode, err.Error())
+	// TODO: add error message
+	if statusCode > 0 && message == "" {
+		message = http.StatusText(statusCode)
+	}
+
+	return echo.NewHTTPError(statusCode, message).SetInternal(err)
 }
