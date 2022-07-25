@@ -21,8 +21,8 @@ func NewUserRepository(uc *ent.UserClient) repository.UserRepository {
 
 func (r *userRepositoryImpl) FindByID(ctx context.Context, id int) (model.User, error) {
 	user, err := r.uc.Query().Where(user.IDEQ(id)).First(ctx)
-	if cerr := convertError(err); cerr != nil {
-		return model.User{}, cerr
+	if err != nil {
+		return model.User{}, convertError(err)
 	}
 
 	return model.User{
@@ -34,8 +34,8 @@ func (r *userRepositoryImpl) FindByID(ctx context.Context, id int) (model.User, 
 
 func (r *userRepositoryImpl) Create(ctx context.Context, params *repository.CreateUserParams) (model.User, error) {
 	user, err := r.uc.Create().SetName(params.Name).SetEmail(params.Email).Save(ctx)
-	if cerr := convertError(err); cerr != nil {
-		return model.User{}, cerr
+	if err != nil {
+		return model.User{}, convertError(err)
 	}
 
 	return model.User{

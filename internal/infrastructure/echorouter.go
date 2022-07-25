@@ -2,7 +2,6 @@ package infrastructure
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/controller"
@@ -34,13 +33,6 @@ func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, int, er
 	return func(c echo.Context) error {
 		req := new(ReqT)
 		if err := c.Bind(req); err != nil {
-			var herr *echo.HTTPError
-			if errors.As(err, &herr) {
-				herr.Message = fmt.Sprintf("bind failed: %v", herr.Message)
-
-				return herr
-			}
-
 			return convertEchoHTTPError(http.StatusBadRequest, err)
 		}
 
@@ -56,9 +48,17 @@ func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, int, er
 // convertEchoHTTPError converts error to echo.HTTPError
 func convertEchoHTTPError(code int, err error) error {
 	var herr *echo.HTTPError
-	if errors.As(err, &herr) && herr.Code == code {
-		return herr
+	if errors.As(err, &herr) {
+		if herr.Code == code {
+			return herr
+		}
+
+		err = herr.Internal
 	}
 
-	return echo.NewHTTPError(code, http.StatusText(code)).SetInternal(err)
+	if code/100 == 5 {
+		return echo.NewHTTPError(code, http.StatusText(code)).SetInternal(err)
+	}
+
+	return echo.NewHTTPError(code, err.Error()).SetInternal(err)
 }

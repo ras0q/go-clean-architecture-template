@@ -70,9 +70,9 @@ func (c *testClient) insertMockUser(t *testing.T) {
 	ctx := context.Background()
 	if _, err := c.c.User.Query().Where(user.ID(1)).First(ctx); ent.IsNotFound(err) {
 		if _, err := c.c.User.Create().SetID(1).SetName("Ras").SetEmail("ras@example.com").Save(ctx); err != nil {
-			t.Error(errors.Wrap(err, "uc.Create"))
+			t.Error(errors.Wrap(err, "failed to insert mock user into database"))
 		}
 	} else if err != nil {
-		t.Error(errors.Wrap(err, "uc.Query"))
+		t.Error(errors.Wrap(err, "failed to find a mock user from database"))
 	}
 }

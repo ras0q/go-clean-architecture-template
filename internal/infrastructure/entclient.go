@@ -16,7 +16,7 @@ import (
 func SetupEntClient() (*ent.Client, func(echo.Logger), error) {
 	c, err := ent.Open(dialect.MySQL, "root:password@tcp(localhost:3306)/myapp?parseTime=true")
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "ent.Open")
+		return nil, nil, errors.Wrap(err, "failed to open database")
 	}
 
 	if err := c.Schema.Create(
@@ -25,7 +25,7 @@ func SetupEntClient() (*ent.Client, func(echo.Logger), error) {
 		migrate.WithDropColumn(true),
 		migrate.WithForeignKeys(true),
 	); err != nil {
-		return nil, nil, errors.Wrap(err, "(*migrate.Schema).Create")
+		return nil, nil, errors.Wrap(err, "failed to create schema resources")
 	}
 
 	closeFunc := func(logger echo.Logger) {
