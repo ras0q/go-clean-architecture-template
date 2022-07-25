@@ -2,14 +2,15 @@ package controller
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
 	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
 )
 
 type UserController interface {
-	GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, error)
-	PostUser(ctx context.Context, req *PostUserRequest) (PostUserResponse, error)
+	GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, int, error)
+	PostUser(ctx context.Context, req *PostUserRequest) (PostUserResponse, int, error)
 }
 
 type userControllerImpl struct {
@@ -43,20 +44,20 @@ type (
 	PostUserResponse User
 )
 
-func (c *userControllerImpl) GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, error) {
+func (c *userControllerImpl) GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, int, error) {
 	user, err := c.ur.FindByID(ctx, req.ID)
 	if err != nil {
-		return GetUserResponse{}, errors.Wrap(err, "userRepository.FindByID")
+		return GetUserResponse{}, statusCode(err), errors.Wrap(err, "userRepository.FindByID")
 	}
 
 	return GetUserResponse{
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
-	}, nil
+	}, http.StatusOK, nil
 }
 
-func (c *userControllerImpl) PostUser(ctx context.Context, req *PostUserRequest) (PostUserResponse, error) {
+func (c *userControllerImpl) PostUser(ctx context.Context, req *PostUserRequest) (PostUserResponse, int, error) {
 	params := repository.CreateUserParams{
 		Name:  req.Name,
 		Email: req.Email,
@@ -64,12 +65,12 @@ func (c *userControllerImpl) PostUser(ctx context.Context, req *PostUserRequest)
 
 	user, err := c.ur.Create(ctx, &params)
 	if err != nil {
-		return PostUserResponse{}, errors.Wrap(err, "userRepository.Create")
+		return PostUserResponse{}, statusCode(err), errors.Wrap(err, "userRepository.Create")
 	}
 
 	return PostUserResponse{
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
-	}, nil
+	}, http.StatusCreated, nil
 }
