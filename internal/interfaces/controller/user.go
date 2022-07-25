@@ -47,7 +47,7 @@ type (
 func (c *userControllerImpl) GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, int, error) {
 	user, err := c.ur.FindByID(ctx, req.ID)
 	if err != nil {
-		return GetUserResponse{}, statusCode(err), errors.Wrap(err, "userRepository.FindByID")
+		return GetUserResponse{}, errors.StatusCode(err), errors.Wrap(err, "userRepository.FindByID")
 	}
 
 	return GetUserResponse{
@@ -65,7 +65,7 @@ func (c *userControllerImpl) PostUser(ctx context.Context, req *PostUserRequest)
 
 	user, err := c.ur.Create(ctx, &params)
 	if err != nil {
-		return PostUserResponse{}, statusCode(err), errors.Wrap(err, "userRepository.Create")
+		return PostUserResponse{}, errors.StatusCode(err), errors.Wrap(err, "userRepository.Create")
 	}
 
 	return PostUserResponse{
