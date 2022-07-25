@@ -18,14 +18,6 @@ jobs:
   test-integration:
     name: Test (Integration)
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:latest
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: myapp
-        ports:
-          - 3306:3306
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/my-setup-go
