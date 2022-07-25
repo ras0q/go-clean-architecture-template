@@ -33,6 +33,22 @@ func {{.TestName}}(t *testing.T) {
 		{{if .ReturnsError}}wantErr bool{{end}}
 	}{
 		// TODO: Add test cases.
+		//
+		// "example": {
+		// 		args: args{
+						{{- range .TestParameters}}
+		//			{{ Param .}}: "example",
+						{{- end}}
+		// 		},
+					{{- range .TestResults}}
+		//		{{ Want .}}: {{.Type}}{},
+					{{- end}}
+		// 		setupFields: func(t *testing.T
+						{{- if $f.TestParameters}}, args args{{end}}
+						{{- range $f.TestResults}}, {{Want .}} {{.Type}}{{- end -}}
+					) fields {},
+		// 		wantErr: false,
+		// 	},
 	}
 	for name, tt := range tests {
 		tt := tt
