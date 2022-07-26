@@ -78,3 +78,7 @@ db-up:
 db-down:
 	docker stop ${MYSQL_CONTAINER_NAME}
 	docker rm ${MYSQL_CONTAINER_NAME}
+
+# add ent schema (`name` must be specified)
+add-schema:
+	@go run entgo.io/ent/cmd/ent@latest init --target ./internal/interfaces/repository/ent/schema $name
