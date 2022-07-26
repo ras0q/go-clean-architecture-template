@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/Ras96/go-clean-architecture-template/internal/infrastructure"
 	"github.com/labstack/echo/v4"
 )
@@ -8,19 +10,23 @@ import (
 func main() {
 	e := echo.New()
 	if err := infrastructure.SetupEchoMiddleware(e); err != nil {
-		e.Logger.Fatalf("main: infrastructure.SetupEchoMiddleware: %s", err.Error())
+		log.Panicf("failed to setup echo middleware: %v", err)
 	}
 
-	ec, close, err := infrastructure.SetupEntClient()
+	ec, err := infrastructure.SetupEntClient()
 	if err != nil {
-		e.Logger.Fatalf("main: infrastructure.SetupEntClient: %s", err.Error())
+		log.Panicf("failed to setup ent client: %v", err)
 	}
-	defer close(e.Logger)
+	defer func() {
+		if err := ec.Close(); err != nil {
+			log.Panicf("failed to close database: %v", err)
+		}
+	}()
 
 	c := infrastructure.InjectControllers(ec)
 	if err := infrastructure.SetupEchoRouter(e, c); err != nil {
-		e.Logger.Fatalf("main: infrastructure.SetupEchoRouter: %s", err.Error())
+		log.Panicf("failed to setup echo router: %v", err)
 	}
 
-	e.Logger.Fatal(e.Start(":1323"))
+	log.Fatal(e.Start(":1323"))
 }
