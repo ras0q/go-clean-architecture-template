@@ -8,7 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	model "github.com/Ras96/go-clean-architecture-template/internal/domain/model"
+	domain "github.com/Ras96/go-clean-architecture-template/internal/domain"
 	repository "github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
 	gomock "github.com/golang/mock/gomock"
 )
@@ -37,10 +37,10 @@ func (m *MockUserRepository) EXPECT() *MockUserRepositoryMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockUserRepository) Create(ctx context.Context, params *repository.CreateUserParams) (model.User, error) {
+func (m *MockUserRepository) Create(ctx context.Context, params *repository.CreateUserParams) (domain.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, params)
-	ret0, _ := ret[0].(model.User)
+	ret0, _ := ret[0].(domain.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -52,10 +52,10 @@ func (mr *MockUserRepositoryMockRecorder) Create(ctx, params interface{}) *gomoc
 }
 
 // FindByID mocks base method.
-func (m *MockUserRepository) FindByID(ctx context.Context, id int) (model.User, error) {
+func (m *MockUserRepository) FindByID(ctx context.Context, id int) (domain.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByID", ctx, id)
-	ret0, _ := ret[0].(model.User)
+	ret0, _ := ret[0].(domain.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

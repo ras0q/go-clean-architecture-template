@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/domain/model"
+	"github.com/Ras96/go-clean-architecture-template/internal/domain"
 	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
 	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository/mock_repository"
 	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
@@ -49,7 +49,7 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 				mockur.
 					EXPECT().
 					FindByID(args.ctx, args.req.ID).
-					Return(model.User{
+					Return(domain.User{
 						ID:    args.req.ID,
 						Name:  want.Name,
 						Email: want.Email,
@@ -76,7 +76,7 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 				mockur.
 					EXPECT().
 					FindByID(args.ctx, args.req.ID).
-					Return(model.User{}, errors.ErrNotFound)
+					Return(domain.User{}, errors.ErrNotFound)
 
 				return fields{
 					ur: mockur,
@@ -99,7 +99,7 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 				mockur.
 					EXPECT().
 					FindByID(args.ctx, args.req.ID).
-					Return(model.User{}, errors.ErrInternal)
+					Return(domain.User{}, errors.ErrInternal)
 
 				return fields{
 					ur: mockur,
@@ -168,7 +168,7 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 						Name:  args.req.Name,
 						Email: args.req.Email,
 					}).
-					Return(model.User{
+					Return(domain.User{
 						ID:    1,
 						Name:  args.req.Name,
 						Email: args.req.Email,
@@ -199,7 +199,7 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 						Name:  args.req.Name,
 						Email: args.req.Email,
 					}).
-					Return(model.User{}, errors.ErrInternal)
+					Return(domain.User{}, errors.ErrInternal)
 
 				return fields{
 					ur: mockur,

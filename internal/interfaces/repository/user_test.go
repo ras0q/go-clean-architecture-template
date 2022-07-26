@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/domain/model"
+	"github.com/Ras96/go-clean-architecture-template/internal/domain"
 	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent"
 	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
 	"github.com/google/go-cmp/cmp"
@@ -19,10 +19,10 @@ func Test_userRepositoryImpl_FindByID(t *testing.T) {
 	type fields struct {
 		UserClient *ent.UserClient
 	}
-	type setupFieldsFunc func(t *testing.T, args args, want model.User) fields
+	type setupFieldsFunc func(t *testing.T, args args, want domain.User) fields
 	tests := map[string]struct {
 		args        args
-		want        model.User
+		want        domain.User
 		setupFields setupFieldsFunc
 		wantErr     bool
 	}{
@@ -31,12 +31,12 @@ func Test_userRepositoryImpl_FindByID(t *testing.T) {
 				ctx: context.Background(),
 				id:  1,
 			},
-			want: model.User{
+			want: domain.User{
 				ID:    1,
 				Name:  "test",
 				Email: "test@example.com",
 			},
-			setupFields: func(t *testing.T, args args, want model.User) fields {
+			setupFields: func(t *testing.T, args args, want domain.User) fields {
 				uc := newEntClient(t).User
 				insertUser(args.ctx, t, uc, args.id, want.Name, want.Email)
 
@@ -49,8 +49,8 @@ func Test_userRepositoryImpl_FindByID(t *testing.T) {
 				ctx: context.Background(),
 				id:  1,
 			},
-			want: model.User{},
-			setupFields: func(t *testing.T, args args, _ model.User) fields {
+			want: domain.User{},
+			setupFields: func(t *testing.T, args args, _ domain.User) fields {
 				uc := newEntClient(t).User
 				insertUser(args.ctx, t, uc, args.id+1, "test", "test@example.com")
 
@@ -85,10 +85,10 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 	type fields struct {
 		uc *ent.UserClient
 	}
-	type setupFieldsFunc func(t *testing.T, args args, want model.User) fields
+	type setupFieldsFunc func(t *testing.T, args args, want domain.User) fields
 	tests := map[string]struct {
 		args        args
-		want        model.User
+		want        domain.User
 		setupFields setupFieldsFunc
 		wantErr     bool
 	}{
@@ -100,12 +100,12 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 					Email: "test@example.com",
 				},
 			},
-			want: model.User{
+			want: domain.User{
 				ID:    1,
 				Name:  "test",
 				Email: "test@example.com",
 			},
-			setupFields: func(t *testing.T, _ args, _ model.User) fields {
+			setupFields: func(t *testing.T, _ args, _ domain.User) fields {
 				uc := newEntClient(t).User
 
 				return fields{uc}
@@ -120,12 +120,12 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 					Email: "test@example.com",
 				},
 			},
-			want: model.User{
+			want: domain.User{
 				ID:    101,
 				Name:  "test",
 				Email: "test@example.com",
 			},
-			setupFields: func(t *testing.T, args args, _ model.User) fields {
+			setupFields: func(t *testing.T, args args, _ domain.User) fields {
 				uc := newEntClient(t).User
 				insertUser(args.ctx, t, uc, 100, "test", "test100@example.com")
 
@@ -141,8 +141,8 @@ func Test_userRepositoryImpl_Create(t *testing.T) {
 					Email: "test@example.com",
 				},
 			},
-			want: model.User{},
-			setupFields: func(t *testing.T, args args, _ model.User) fields {
+			want: domain.User{},
+			setupFields: func(t *testing.T, args args, _ domain.User) fields {
 				uc := newEntClient(t).User
 				insertUser(args.ctx, t, uc, 1, "test", args.params.Email) // insert same email
 
