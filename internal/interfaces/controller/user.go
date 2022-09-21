@@ -2,15 +2,13 @@ package controller
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
-	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
 )
 
 type UserController interface {
-	GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, int, error)
-	PostUser(ctx context.Context, req *PostUserRequest) (PostUserResponse, int, error)
+	GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, error)
+	PostUser(ctx context.Context, req *PostUserRequest) (PostUserResponse, error)
 }
 
 type userControllerImpl struct {
@@ -44,20 +42,20 @@ type (
 	PostUserResponse User
 )
 
-func (c *userControllerImpl) GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, int, error) {
+func (c *userControllerImpl) GetUser(ctx context.Context, req *GetUserRequest) (GetUserResponse, error) {
 	user, err := c.ur.FindByID(ctx, req.ID)
 	if err != nil {
-		return GetUserResponse{}, errors.StatusCode(err), errors.Wrap(err, "failed to find user from repository")
+		return GetUserResponse{}, newHTTPError(err)
 	}
 
 	return GetUserResponse{
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
-	}, http.StatusOK, nil
+	}, nil
 }
 
-func (c *userControllerImpl) PostUser(ctx context.Context, req *PostUserRequest) (PostUserResponse, int, error) {
+func (c *userControllerImpl) PostUser(ctx context.Context, req *PostUserRequest) (PostUserResponse, error) {
 	params := repository.CreateUserParams{
 		Name:  req.Name,
 		Email: req.Email,
@@ -65,12 +63,12 @@ func (c *userControllerImpl) PostUser(ctx context.Context, req *PostUserRequest)
 
 	user, err := c.ur.Create(ctx, &params)
 	if err != nil {
-		return PostUserResponse{}, errors.StatusCode(err), errors.Wrap(err, "failed to create user into repository")
+		return PostUserResponse{}, newHTTPError(err)
 	}
 
 	return PostUserResponse{
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
-	}, http.StatusCreated, nil
+	}, nil
 }

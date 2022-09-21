@@ -1,49 +1,34 @@
 package errors
 
-import (
-	"errors"
-	"fmt"
-	"net/http"
-)
+type Code interface {
+	~uint
+	Messsage() string
+}
 
-// Rule:
-// 1. Define basic errors in this package
-// 2. Use `errors.Wrap` when returning error from a function
-// 3. Use `errors.Is` or `err != nil` to check error
+type CodeIsImplementedBy[T Code] struct{}
 
-var (
-	ErrNotFound = errors.New("not found")
-	ErrBind     = errors.New("bind error")
-	ErrValidate = errors.New("validate error")
-	ErrConflict = errors.New("invalid argument")
-	ErrInternal = errors.New("internal error")
-)
+type CodeError[T Code] struct {
+	Code     T
+	internal error
+}
 
-// StatusCode returns the appropriate status code for the error content.
-func StatusCode(err error) int {
-	switch {
-	case Is(err, ErrValidate):
-		return http.StatusBadRequest
-	case Is(err, ErrNotFound):
-		return http.StatusNotFound
-	case Is(err, ErrConflict):
-		return http.StatusConflict
-	default:
-		return http.StatusInternalServerError
+func (e *CodeError[T]) Error() string {
+	if e.internal == nil {
+		return e.Code.Messsage()
+	}
+
+	return e.Code.Messsage() + ": " + e.internal.Error()
+}
+
+func New[T Code](code T) error {
+	return &CodeError[T]{
+		Code: code,
 	}
 }
 
-// Wrap wraps standard fmt.Errorf
-func Wrap(err error, msg string) error {
-	return fmt.Errorf("%s: %w", msg, err)
-}
-
-// Is wraps standard errors.Is
-func Is(err error, target error) bool {
-	return errors.Is(err, target)
-}
-
-// As wraps standard errors.As
-func As(err error, target interface{}) bool {
-	return errors.As(err, target)
+func Wrap[T Code](code T, internal error) error {
+	return &CodeError[T]{
+		Code:     code,
+		internal: internal,
+	}
 }

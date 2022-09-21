@@ -2,5 +2,6 @@ linters:
   enable:
     - revive
     - nlreturn
+    - exhaustive
   disable:
     - structcheck # structcheck is disabled in go1.18.

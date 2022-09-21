@@ -12,7 +12,6 @@ import (
 	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent"
 	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent/enttest"
 	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent/user"
-	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
 	"github.com/Ras96/go-clean-architecture-template/pkg/random"
 	"github.com/labstack/echo/v4"
 
@@ -70,9 +69,9 @@ func (c *testClient) insertMockUser(t *testing.T) {
 	ctx := context.Background()
 	if _, err := c.c.User.Query().Where(user.ID(1)).First(ctx); ent.IsNotFound(err) {
 		if _, err := c.c.User.Create().SetID(1).SetName("Ras").SetEmail("ras@example.com").Save(ctx); err != nil {
-			t.Error(errors.Wrap(err, "failed to insert mock user into database"))
+			t.Error(err)
 		}
 	} else if err != nil {
-		t.Error(errors.Wrap(err, "failed to find a mock user from database"))
+		t.Error(err)
 	}
 }

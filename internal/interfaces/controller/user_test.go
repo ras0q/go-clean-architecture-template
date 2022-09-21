@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/Ras96/go-clean-architecture-template/internal/domain"
+	"github.com/Ras96/go-clean-architecture-template/internal/usecases"
 	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
 	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository/mock_repository"
 	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
@@ -76,7 +77,7 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 				mockur.
 					EXPECT().
 					FindByID(args.ctx, args.req.ID).
-					Return(domain.User{}, errors.ErrNotFound)
+					Return(domain.User{}, errors.New(usecases.ECNotFound))
 
 				return fields{
 					ur: mockur,
@@ -91,15 +92,14 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 					ID: 1,
 				},
 			},
-			want:  GetUserResponse{},
-			want1: http.StatusInternalServerError,
+			want: GetUserResponse{},
 			setupFields: func(t *testing.T, args args, _ GetUserResponse, _ int) fields {
 				ctrl := gomock.NewController(t)
 				mockur := mock_repository.NewMockUserRepository(ctrl)
 				mockur.
 					EXPECT().
 					FindByID(args.ctx, args.req.ID).
-					Return(domain.User{}, errors.ErrInternal)
+					Return(domain.User{}, errors.New(usecases.ECInternal))
 
 				return fields{
 					ur: mockur,
@@ -114,14 +114,11 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 			t.Parallel()
 			f := tt.setupFields(t, tt.args, tt.want, tt.want1)
 			c := NewUserController(f.ur)
-			got, got1, err := c.GetUser(tt.args.ctx, tt.args.req)
+			got, err := c.GetUser(tt.args.ctx, tt.args.req)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("wantErr is %t, but err is %v", tt.wantErr, err)
 			}
 			if diff := cmp.Diff(tt.want, got); len(diff) > 0 {
-				t.Errorf("Compare value is mismatch (-want +got):%s\n", diff)
-			}
-			if diff := cmp.Diff(tt.want1, got1); len(diff) > 0 {
 				t.Errorf("Compare value is mismatch (-want +got):%s\n", diff)
 			}
 		})
@@ -188,8 +185,7 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 					Email: "test@example.com",
 				},
 			},
-			want:  PostUserResponse{},
-			want1: http.StatusInternalServerError,
+			want: PostUserResponse{},
 			setupFields: func(t *testing.T, args args, _ PostUserResponse, _ int) fields {
 				ctrl := gomock.NewController(t)
 				mockur := mock_repository.NewMockUserRepository(ctrl)
@@ -199,7 +195,7 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 						Name:  args.req.Name,
 						Email: args.req.Email,
 					}).
-					Return(domain.User{}, errors.ErrInternal)
+					Return(domain.User{}, errors.New(usecases.ECInternal))
 
 				return fields{
 					ur: mockur,
@@ -214,14 +210,11 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 			t.Parallel()
 			f := tt.setupFields(t, tt.args, tt.want, tt.want1)
 			c := NewUserController(f.ur)
-			got, got1, err := c.PostUser(tt.args.ctx, tt.args.req)
+			got, err := c.PostUser(tt.args.ctx, tt.args.req)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("wantErr is %t, but err is %v", tt.wantErr, err)
 			}
 			if diff := cmp.Diff(tt.want, got); len(diff) > 0 {
-				t.Errorf("Compare value is mismatch (-want +got):%s\n", diff)
-			}
-			if diff := cmp.Diff(tt.want1, got1); len(diff) > 0 {
 				t.Errorf("Compare value is mismatch (-want +got):%s\n", diff)
 			}
 		})
