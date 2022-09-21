@@ -77,9 +77,9 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 		statusCode  int
 		wantResBody *controller.PostUserResponse
 	}{
-		"200": {
+		"201": {
 			reqJSONBody: `{"name": "Cal", "email": "cal@example.com"}`,
-			statusCode:  http.StatusOK,
+			statusCode:  http.StatusCreated,
 			wantResBody: &controller.PostUserResponse{
 				ID:    2,
 				Name:  "Cal",

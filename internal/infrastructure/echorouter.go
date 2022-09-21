@@ -29,7 +29,7 @@ func SetupEchoMiddleware(e *echo.Echo) error {
 
 // h is a helper function for wrapping echo.HandlerFunc
 // ReqT is a type of request body, and ResT is a type of response body
-func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, error)) echo.HandlerFunc {
+func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (*ResT, error)) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		req := new(ReqT)
 		if err := c.Bind(req); err != nil {
@@ -41,7 +41,14 @@ func h[ReqT any, ResT any](f func(ctx context.Context, req *ReqT) (ResT, error))
 			return convertEchoHTTPError(err)
 		}
 
-		return c.JSON(http.StatusOK, res)
+		var code = http.StatusOK
+		if res == nil {
+			code = http.StatusNoContent
+		} else if c.Request().Method == http.MethodPost {
+			code = http.StatusCreated
+		}
+
+		return c.JSON(code, res)
 	}
 }
 

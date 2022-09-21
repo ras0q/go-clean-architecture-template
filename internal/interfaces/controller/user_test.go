@@ -23,10 +23,10 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 	type fields struct {
 		ur repository.UserRepository
 	}
-	type setupFieldsFunc func(t *testing.T, args args, _ GetUserResponse, _ int) fields
+	type setupFieldsFunc func(t *testing.T, args args, _ *GetUserResponse, _ int) fields
 	tests := map[string]struct {
 		args        args
-		want        GetUserResponse
+		want        *GetUserResponse
 		want1       int
 		setupFields setupFieldsFunc
 		wantErr     bool
@@ -38,13 +38,13 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 					ID: 1,
 				},
 			},
-			want: GetUserResponse{
+			want: &GetUserResponse{
 				ID:    1,
 				Name:  "test",
 				Email: "test@example.com",
 			},
 			want1: http.StatusOK,
-			setupFields: func(t *testing.T, args args, want GetUserResponse, _ int) fields {
+			setupFields: func(t *testing.T, args args, want *GetUserResponse, _ int) fields {
 				ctrl := gomock.NewController(t)
 				mockur := mock_repository.NewMockUserRepository(ctrl)
 				mockur.
@@ -69,9 +69,9 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 					ID: 1,
 				},
 			},
-			want:  GetUserResponse{},
+			want:  nil,
 			want1: http.StatusNotFound,
-			setupFields: func(t *testing.T, args args, _ GetUserResponse, _ int) fields {
+			setupFields: func(t *testing.T, args args, _ *GetUserResponse, _ int) fields {
 				ctrl := gomock.NewController(t)
 				mockur := mock_repository.NewMockUserRepository(ctrl)
 				mockur.
@@ -92,8 +92,8 @@ func Test_userControllerImpl_GetUser(t *testing.T) {
 					ID: 1,
 				},
 			},
-			want: GetUserResponse{},
-			setupFields: func(t *testing.T, args args, _ GetUserResponse, _ int) fields {
+			want: nil,
+			setupFields: func(t *testing.T, args args, _ *GetUserResponse, _ int) fields {
 				ctrl := gomock.NewController(t)
 				mockur := mock_repository.NewMockUserRepository(ctrl)
 				mockur.
@@ -134,10 +134,10 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 	type fields struct {
 		ur repository.UserRepository
 	}
-	type setupFieldsFunc func(t *testing.T, args args, _ PostUserResponse, _ int) fields
+	type setupFieldsFunc func(t *testing.T, args args, _ *PostUserResponse, _ int) fields
 	tests := map[string]struct {
 		args        args
-		want        PostUserResponse
+		want        *PostUserResponse
 		want1       int
 		setupFields setupFieldsFunc
 		wantErr     bool
@@ -150,13 +150,13 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 					Email: "test@example.com",
 				},
 			},
-			want: PostUserResponse{
+			want: &PostUserResponse{
 				ID:    1,
 				Name:  "test",
 				Email: "test@example.com",
 			},
 			want1: http.StatusCreated,
-			setupFields: func(t *testing.T, args args, _ PostUserResponse, _ int) fields {
+			setupFields: func(t *testing.T, args args, _ *PostUserResponse, _ int) fields {
 				ctrl := gomock.NewController(t)
 				mockur := mock_repository.NewMockUserRepository(ctrl)
 				mockur.
@@ -185,8 +185,8 @@ func Test_userControllerImpl_PostUser(t *testing.T) {
 					Email: "test@example.com",
 				},
 			},
-			want: PostUserResponse{},
-			setupFields: func(t *testing.T, args args, _ PostUserResponse, _ int) fields {
+			want: nil,
+			setupFields: func(t *testing.T, args args, _ *PostUserResponse, _ int) fields {
 				ctrl := gomock.NewController(t)
 				mockur := mock_repository.NewMockUserRepository(ctrl)
 				mockur.
