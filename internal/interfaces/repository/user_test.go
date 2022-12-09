@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/domain"
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent"
-	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
 	"github.com/google/go-cmp/cmp"
+	"github.com/ras0q/go-clean-architecture-template/internal/domain"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/repository/ent"
+	"github.com/ras0q/go-clean-architecture-template/internal/usecases/repository"
 )
 
 func Test_userRepositoryImpl_FindByID(t *testing.T) {

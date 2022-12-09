@@ -1,6 +1,6 @@
 package infrastructure
 
-import "github.com/Ras96/go-clean-architecture-template/pkg/errors"
+import "github.com/ras0q/go-clean-architecture-template/pkg/errors"
 
 type errorCode uint
 

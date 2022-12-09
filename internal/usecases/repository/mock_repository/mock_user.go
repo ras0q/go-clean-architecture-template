@@ -8,9 +8,9 @@ import (
 	context "context"
 	reflect "reflect"
 
-	domain "github.com/Ras96/go-clean-architecture-template/internal/domain"
-	repository "github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
 	gomock "github.com/golang/mock/gomock"
+	domain "github.com/ras0q/go-clean-architecture-template/internal/domain"
+	repository "github.com/ras0q/go-clean-architecture-template/internal/usecases/repository"
 )
 
 // MockUserRepository is a mock of UserRepository interface.

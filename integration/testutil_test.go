@@ -8,12 +8,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/infrastructure"
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent"
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent/enttest"
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent/user"
-	"github.com/Ras96/go-clean-architecture-template/pkg/random"
 	"github.com/labstack/echo/v4"
+	"github.com/ras0q/go-clean-architecture-template/internal/infrastructure"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/repository/ent"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/repository/ent/enttest"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/repository/ent/user"
+	"github.com/ras0q/go-clean-architecture-template/pkg/random"
 
 	_ "github.com/mattn/go-sqlite3" // driver for sqlite3
 )

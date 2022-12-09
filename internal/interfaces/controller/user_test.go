@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/domain"
-	"github.com/Ras96/go-clean-architecture-template/internal/usecases"
-	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
-	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository/mock_repository"
-	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
+	"github.com/ras0q/go-clean-architecture-template/internal/domain"
+	"github.com/ras0q/go-clean-architecture-template/internal/usecases"
+	"github.com/ras0q/go-clean-architecture-template/internal/usecases/repository"
+	"github.com/ras0q/go-clean-architecture-template/internal/usecases/repository/mock_repository"
+	"github.com/ras0q/go-clean-architecture-template/pkg/errors"
 )
 
 func Test_userControllerImpl_GetUser(t *testing.T) {

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent"
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent/enttest"
-	"github.com/Ras96/go-clean-architecture-template/pkg/random"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/repository/ent"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/repository/ent/enttest"
+	"github.com/ras0q/go-clean-architecture-template/pkg/random"
 
 	_ "github.com/mattn/go-sqlite3" // driver for sqlite3
 )

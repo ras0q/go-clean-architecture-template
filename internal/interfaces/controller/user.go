@@ -3,7 +3,7 @@ package controller
 import (
 	"context"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/usecases/repository"
+	"github.com/ras0q/go-clean-architecture-template/internal/usecases/repository"
 )
 
 type UserController interface {

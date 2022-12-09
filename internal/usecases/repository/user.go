@@ -5,7 +5,7 @@ package repository
 import (
 	"context"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/domain"
+	"github.com/ras0q/go-clean-architecture-template/internal/domain"
 )
 
 type (

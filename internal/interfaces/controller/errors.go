@@ -3,8 +3,8 @@ package controller
 import (
 	"net/http"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/usecases"
-	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
+	"github.com/ras0q/go-clean-architecture-template/internal/usecases"
+	"github.com/ras0q/go-clean-architecture-template/pkg/errors"
 )
 
 type StatusCode uint

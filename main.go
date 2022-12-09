@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/infrastructure"
 	"github.com/labstack/echo/v4"
+	"github.com/ras0q/go-clean-architecture-template/internal/infrastructure"
 )
 
 func main() {

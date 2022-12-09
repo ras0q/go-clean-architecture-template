@@ -4,10 +4,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/controller"
-	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/controller"
+	"github.com/ras0q/go-clean-architecture-template/pkg/errors"
 )
 
 func SetupEchoRouter(e *echo.Echo, c controller.Controllers) error {

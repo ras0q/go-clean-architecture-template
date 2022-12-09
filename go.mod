@@ -1,4 +1,4 @@
-module github.com/Ras96/go-clean-architecture-template
+module github.com/ras0q/go-clean-architecture-template
 
 go 1.18
 

@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"entgo.io/ent/dialect"
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent"
-	"github.com/Ras96/go-clean-architecture-template/internal/interfaces/repository/ent/migrate"
-	"github.com/Ras96/go-clean-architecture-template/pkg/errors"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/repository/ent"
+	"github.com/ras0q/go-clean-architecture-template/internal/interfaces/repository/ent/migrate"
+	"github.com/ras0q/go-clean-architecture-template/pkg/errors"
 
 	// import mysql driver
 	_ "github.com/go-sql-driver/mysql"
